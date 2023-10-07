@@ -1,6 +1,6 @@
 __pycache__
 **/.git
-**/.github
+# **/.github # Dockerfile will use content in .github
 **/_scripts
 **/_static
 **/_templates
