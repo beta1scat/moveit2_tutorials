@@ -5,6 +5,6 @@ For more information see the pages [Continuous Integration and Docker](http://mo
 
 To build the Docker image locally, run the following from the root folder of this repository.
 
-    docker build -f .docker/Dockerfile -t moveit2_tutorials --build-arg ROS_DISTRO=${ROS_DISTRO} --build-arg all_proxy=socks5://127.0.0.1:7890 .
+    docker build -f .docker/Dockerfile -t moveit2_tutorials --build-arg ROS_DISTRO=${ROS_DISTRO} --build-arg all_proxy=socks5://10.10.10.169:7890 .
 
 where `${ROS_DISTRO}` should be available if you have a ROS installation sourced locally, else you can pick a target release, e.g., `humble` or `rolling`.
