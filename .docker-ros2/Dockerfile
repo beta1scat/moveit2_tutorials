@@ -11,7 +11,7 @@ RUN mv /etc/apt/sources.list /etc/apt/sources.list.bak && \
     echo "deb http://security.ubuntu.com/ubuntu/ jammy-security main restricted universe multiverse" >> /etc/apt/sources.list
 
 # Update and install moveit gazebo etc.
-RUN apt update && apt install -y curl gnupg2 && \
+RUN apt update && apt install -y curl gnupg2 unar && \
     curl -sSL https://ghproxy.com/https://raw.githubusercontent.com/ros/rosdistro/master/ros.key -o /usr/share/keyrings/ros-archive-keyring.gpg && \
     mv /etc/apt/sources.list.d/ros2-latest.list /etc/apt/sources.list.d/ros2-latest.list.bak && \
     echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/ros-archive-keyring.gpg] https://mirrors.tuna.tsinghua.edu.cn/ros2/ubuntu jammy main" | tee /etc/apt/sources.list.d/ros2.list > /dev/null && \
@@ -20,7 +20,7 @@ RUN apt update && apt install -y curl gnupg2 && \
     ros-${ROS_DISTRO}-gripper-controllers gazebo ros-${ROS_DISTRO}-gazebo-ros2-control \
     ros-${ROS_DISTRO}-gazebo-ros-pkgs ros-${ROS_DISTRO}-xacro ros-${ROS_DISTRO}-rmw-cyclonedds-cpp \
     ros-${ROS_DISTRO}-moveit-ros-perception ros-${ROS_DISTRO}-moveit-servo \
-    ros-${ROS_DISTRO}-rviz-visual-tools ros-${ROS_DISTRO}-moveit-visual-tools && \
+    ros-${ROS_DISTRO}-rviz-visual-tools ros-${ROS_DISTRO}-moveit-visual-tools ros-${ROS_DISTRO}-rqt* && \
     echo export RMW_IMPLEMENTATION=rmw_cyclonedds_cpp >> ~/.bashrc && \
     echo source /opt/ros/${ROS_DISTRO}/setup.bash >> ~/.bashrc
 
