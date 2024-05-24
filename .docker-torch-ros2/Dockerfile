@@ -28,6 +28,8 @@ RUN curl -sSL https://mirror.ghproxy.com/https://raw.githubusercontent.com/ros/r
     ros-${ROS_DISTRO}-rviz-visual-tools ros-${ROS_DISTRO}-moveit-visual-tools ros-${ROS_DISTRO}-rqt* && \
     # Fix gazebo grasp plugin
     apt install -y libignition-math6-dev  && \
+    # Fix gazebo spawn error
+    pip install -i https://pypi.tuna.tsinghua.edu.cn/simple lxml && \
     echo export RMW_IMPLEMENTATION=rmw_cyclonedds_cpp >> ~/.bashrc && \
     echo source /opt/ros/${ROS_DISTRO}/setup.bash >> ~/.bashrc && \
     rm /opt/conda/lib/libstdc++.so.6 && ln -s /usr/lib/x86_64-linux-gnu/libstdc++.so.6 /opt/conda/lib/libstdc++.so.6
