@@ -1,0 +1,44 @@
+# Example command:
+#   Humble on a Nvidia system:
+#   DOCKER_IMAGE=humble-tutorial docker compose run gpu
+#   Rolling without discrete graphics:
+#   DOCKER_IMAGE=rolling-tutorial docker compose run cpu
+#   docker compose run --rm gpu
+#   docker compose run --name ros2-torch gpu
+
+services:
+  cpu:
+    image: ros2-torch:latest
+    container_name: ros2-torch
+    privileged: true
+    network_mode: host
+    command: /bin/bash
+    volumes:
+      - /tmp/.X11-unix:/tmp/.X11-unix
+      - $XAUTHORITY:/root/.Xauthority
+      - ~/code/docker_ws/:/root/docker_ws
+      - ~/code/docker_ros_ws/:/root/ros_ws
+    working_dir: /root
+    environment:
+      QT_X11_NO_MITSHM: 1
+      DISPLAY: $DISPLAY
+  gpu:
+    image: rocm/pytorch:rocm6.1_ubuntu22.04_py3.10_pytorch_2.1.2
+    container_name: ros2-torch
+    privileged: true
+    network_mode: host
+    command: /bin/bash
+    devices:
+      - /dev/fdk
+      - /dev/dri
+    security_opt:
+      - seccomp:unconfined
+    volumes:
+      - /tmp/.X11-unix:/tmp/.X11-unix
+      - $XAUTHORITY:/root/.Xauthority
+      - ~/code/docker_ws/:/root/docker_ws
+      - ~/code/docker_ros_ws/:/root/ros_ws
+    working_dir: /root
+    environment:
+      QT_X11_NO_MITSHM: 1
+      DISPLAY: $DISPLAY
