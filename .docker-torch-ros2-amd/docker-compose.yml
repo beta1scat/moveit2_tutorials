@@ -23,7 +23,7 @@ services:
       QT_X11_NO_MITSHM: 1
       DISPLAY: $DISPLAY
   gpu:
-    image: rocm/pytorch:rocm6.1_ubuntu22.04_py3.10_pytorch_2.1.2
+    image: ros2-torch:latest
     container_name: ros2-torch
     privileged: true
     network_mode: host

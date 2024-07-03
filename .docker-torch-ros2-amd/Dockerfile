@@ -42,25 +42,47 @@ RUN cd ~ && mkdir -p ws_ifra/src && cd ws_ifra/src && \
     mkdir -p /root/.gazebo && cd /root/.gazebo && \
     git clone https://github.com/osrf/gazebo_models.git && mv gazebo_models models
 
+# Install SAM, RAM, DINO etc.
+RUN cd ~ && mkdir dinoSAM && cd dinoSAM && pip install -U pip && \
+    apt update && apt install -y libgtk2.0-dev pkg-config && \
+    pip install -i https://pypi.tuna.tsinghua.edu.cn/simple opencv-python open3d spatialmath-python && \
+    pip install -i https://pypi.tuna.tsinghua.edu.cn/simple git+https://github.com/xinyu1205/recognize-anything.git && \
+    git clone https://github.com/IDEA-Research/Grounded-Segment-Anything.git && cd Grounded-Segment-Anything && git submodule update --init --recursive && \
+    pip install -i https://pypi.tuna.tsinghua.edu.cn/simple -e segment_anything && \
+    pip install -i https://pypi.tuna.tsinghua.edu.cn/simple --no-build-isolation -e GroundingDINO && \
+    pip install -i https://pypi.tuna.tsinghua.edu.cn/simple --upgrade diffusers[torch] && \
+    cd grounded-sam-osx && bash install.sh && \
+    pip install -i https://pypi.tuna.tsinghua.edu.cn/simple litellm
+    # cd /opt/conda/envs/py_3.10/lib/ && \
+    # rm libssl.so.3 && ln -s /usr/lib/x86_64-linux-gnu/libssl.so.3 libssl.so.3 && \
+    # rm libcurl.so.4.8.0 && ln -s /usr/lib/x86_64-linux-gnu/libcurl.so.4.7.0 libcurl.so.4.8.0 && \
+    # rm libstdc++.so.6.0.29 && ln -s /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.30 .libstdc++.so.6.0.29
+RUN pip uninstall opencv-python && \
+    pip install -i https://pypi.tuna.tsinghua.edu.cn/simple opencv-python lark && \
+    conda uninstall --force openssl libcurl ncurses && \
+    apt remove -y python3-colcon-* && \
+    pip install -U colcon-common-extensions && \
+    ln -s /opt/conda/envs/py_3.10/bin/colcon /usr/bin/ && \
+    cd /opt/conda/envs/py_3.10/lib/ && \
+    rm libssl.so.3 && ln -s /usr/lib/x86_64-linux-gnu/libssl.so.3 libssl.so.3 && cd ~ && \
+
+# conda uninstall --force openssl libcurl ncurses && \
+# docker build . --progress=plain -t ros2-rorch-dino
+
+# 有可能安装了lark以后会出现undefine libgdal的错误？？？
+# 问题解决：
+# conda uninstall libcurl
+# conda uninstall openssl
+# conda uninstall ncurses
+# apt remove python3-colcon-*
+# pip install -U colcon-common-extensions
 # pip install empy==3.3.2
 # pip install catkin_pkg
 # pip install lark
+# cd /opt/conda/envs/py_3.10/lib/ && \
 # rm libssl.so.3 && ln -s /usr/lib/x86_64-linux-gnu/libssl.so.3 libssl.so.3
 # rm libcurl.so.4.8.0 && ln -s /usr/lib/x86_64-linux-gnu/libcurl.so.4.7.0 libcurl.so.4.8.0
 # rm libstdc++.so.6.0.29 && ln -s /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.30 .libstdc++.so.6.0.29
-# # Install SAM, RAM, DINO etc.
-# RUN cd ~ && mkdir dinoSAM && cd dinoSAM && \
-#     pip install -i https://pypi.tuna.tsinghua.edu.cn/simple git+https://github.com/xinyu1205/recognize-anything.git && \
-#     git clone https://github.com/IDEA-Research/Grounded-Segment-Anything.git && cd Grounded-Segment-Anything && git submodule update --init --recursive && \
-#     export AM_I_DOCKER=False && export BUILD_WITH_CUDA=True && export CUDA_HOME=/usr/local/cuda-11.8/ && \
-#     pip install -i https://pypi.tuna.tsinghua.edu.cn/simple -e segment_anything && \
-#     pip install -i https://pypi.tuna.tsinghua.edu.cn/simple --no-build-isolation -e GroundingDINO && \
-#     pip install -i https://pypi.tuna.tsinghua.edu.cn/simple --upgrade diffusers[torch] && \
-#     cd grounded-sam-osx && bash install.sh && \
-#     # pip install -i https://pypi.tuna.tsinghua.edu.cn/simple openmim mmcv-full && \
-#     # pip install -i https://pypi.tuna.tsinghua.edu.cn/simple -r grounded-sam-osx/requirements.txt && \
-#     # cd grounded-sam-osx/transformer_utils && python setup.py install && cd ~ && \
-#     pip install -i https://pypi.tuna.tsinghua.edu.cn/simple litellm && \
-#     git config --global --unset url."https://githubfast.com/".insteadOf https://github.com/
 
-
+# ln -s ~/ros_ws/src/gazebo_models/* ~/.gazebo/models/ && rm ~/.gazebo/models/YCB_gazebo && \
+# ln -s ~/ros_ws/src/gazebo_models/YCB_gazebo* ~/.gazebo/models/
